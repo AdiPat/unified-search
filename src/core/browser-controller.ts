@@ -1,8 +1,9 @@
 import { assert } from "console";
-import puppeteer, { Browser, ElementHandle } from "puppeteer";
+import puppeteer, { Browser, ElementHandle, Page } from "puppeteer";
 
 class BrowserController {
   private instance: Browser | null; // browser instance
+  private curPage: Page | null;
 
   constructor() {}
 
@@ -36,6 +37,8 @@ class BrowserController {
 
     const page = await this.instance.newPage();
 
+    this.curPage = page;
+
     await page.goto("https://www.google.com");
 
     const searchElement = await page.evaluateHandle(() => {
@@ -66,6 +69,24 @@ class BrowserController {
         console.error("Failed to click search button. ");
       }
     });
+  }
+
+  /**
+   *
+   * Scrape page result links and return a JSON array of all links
+   * @returns array result links
+   */
+  async scrapePageResultLinks() {
+    await new Promise((res, rej) => setTimeout(res, 2000)); // this is bad, but unavoidable for now
+    const resultLinks = await this.curPage.evaluate(() => {
+      const links = Array.from(document.querySelectorAll("a[data-ved]"));
+      return links.map((link) => ({
+        href: (link as any).href,
+        text: link.textContent,
+      }));
+    });
+
+    return resultLinks;
   }
 }
 
