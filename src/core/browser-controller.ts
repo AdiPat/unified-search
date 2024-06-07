@@ -1,5 +1,6 @@
 import { assert } from "console";
 import puppeteer, { Browser, ElementHandle, Page } from "puppeteer";
+import { SEARCH_RESULTS_SCROLL_COUNTER } from "./constants";
 
 class BrowserController {
   private instance: Browser | null; // browser instance
@@ -21,6 +22,11 @@ class BrowserController {
     console.log("init() ended");
   }
 
+  /**
+   * Constructs a URL with query parameter for Google Search
+   * @param query Query string to search on Google
+   * @returns Formatted URL
+   */
   constructUrl(query: string): string {
     const url_ = new URL("https://www.google.com/search");
     const params = new URLSearchParams(url_.search);
@@ -28,6 +34,15 @@ class BrowserController {
     url_.search = params.toString();
     const url = url_.toString();
     return url;
+  }
+
+  /**
+   * Scrolls the current page to the bottom
+   */
+  async scrollPageToBottom(): Promise<void> {
+    await this.curPage.evaluate(() => {
+      window.scrollTo(0, document.body.scrollHeight);
+    });
   }
 
   /**
@@ -46,8 +61,26 @@ class BrowserController {
     const page = await this.instance.newPage();
     this.curPage = page;
     const url = this.constructUrl(query);
-
     await this.curPage.goto(url);
+
+    await new Promise((res) => setTimeout(res, 1000));
+    await this.scrollPageToBottom();
+
+    let spanWithText = await this.curPage.$$eval("span", (spans) => {
+      const span = spans.find((span) => span.textContent === "More results");
+      return span ? span.textContent : null;
+    });
+
+    let scrollCounter = 0;
+
+    while (!spanWithText || scrollCounter++ < SEARCH_RESULTS_SCROLL_COUNTER) {
+      await new Promise((res) => setTimeout(res, 1000));
+      await this.scrollPageToBottom();
+      spanWithText = await this.curPage.$$eval("span", (spans) => {
+        const span = spans.find((span) => span.textContent === "More results");
+        return span ? span.textContent : null;
+      });
+    }
   }
 
   /**
