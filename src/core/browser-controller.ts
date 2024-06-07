@@ -56,7 +56,7 @@ class BrowserController {
    * @returns array result links
    */
   async scrapePageResultLinks() {
-    await new Promise((res, rej) => setTimeout(res, 2000)); // this is bad, but unavoidable for now
+    await new Promise((res, rej) => setTimeout(res, 200)); // this is bad, but unavoidable for now
     const resultLinks = await this.curPage.evaluate(() => {
       const links = Array.from(document.querySelectorAll("a[data-ved]"));
       return links.map((link) => ({
