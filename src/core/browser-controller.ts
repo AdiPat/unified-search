@@ -43,6 +43,24 @@ class BrowserController {
     await this.curPage.evaluate(() => {
       window.scrollTo(0, document.body.scrollHeight);
     });
+
+    let spanWithText = await this.curPage.$$eval("span", (spans) => {
+      const span = spans.find((span) => span.textContent === "More results");
+      return span ? span.textContent : null;
+    });
+
+    let scrollCounter = 0;
+
+    while (!spanWithText || scrollCounter++ < SEARCH_RESULTS_SCROLL_COUNTER) {
+      await new Promise((res) => setTimeout(res, 1000));
+      await this.curPage.evaluate(() => {
+        window.scrollTo(0, document.body.scrollHeight);
+      });
+      spanWithText = await this.curPage.$$eval("span", (spans) => {
+        const span = spans.find((span) => span.textContent === "More results");
+        return span ? span.textContent : null;
+      });
+    }
   }
 
   /**
@@ -65,22 +83,6 @@ class BrowserController {
 
     await new Promise((res) => setTimeout(res, 1000));
     await this.scrollPageToBottom();
-
-    let spanWithText = await this.curPage.$$eval("span", (spans) => {
-      const span = spans.find((span) => span.textContent === "More results");
-      return span ? span.textContent : null;
-    });
-
-    let scrollCounter = 0;
-
-    while (!spanWithText || scrollCounter++ < SEARCH_RESULTS_SCROLL_COUNTER) {
-      await new Promise((res) => setTimeout(res, 1000));
-      await this.scrollPageToBottom();
-      spanWithText = await this.curPage.$$eval("span", (spans) => {
-        const span = spans.find((span) => span.textContent === "More results");
-        return span ? span.textContent : null;
-      });
-    }
   }
 
   /**
@@ -93,8 +95,8 @@ class BrowserController {
     const resultLinks = await this.curPage.evaluate(() => {
       const links = Array.from(document.querySelectorAll("a[data-ved]"));
       return links.map((link) => ({
-        href: (link as any).href,
-        text: link.textContent,
+        url: (link as any).href,
+        title: link.textContent,
       }));
     });
 
