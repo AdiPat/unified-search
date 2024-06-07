@@ -48,10 +48,17 @@ class BrowserController {
       const span = spans.find((span) => span.textContent === "More results");
       return span ? span.textContent : null;
     });
+    const paginationFound = await this.curPage.$$eval("tbody", (tables) => {
+      return tables.length > 0;
+    });
 
     let scrollCounter = 0;
 
     while (!spanWithText || scrollCounter++ < SEARCH_RESULTS_SCROLL_COUNTER) {
+      if (paginationFound && scrollCounter >= SEARCH_RESULTS_SCROLL_COUNTER) {
+        break;
+      }
+
       await new Promise((res) => setTimeout(res, 1000));
       await this.curPage.evaluate(() => {
         window.scrollTo(0, document.body.scrollHeight);
