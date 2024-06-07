@@ -21,6 +21,15 @@ class BrowserController {
     console.log("init() ended");
   }
 
+  constructUrl(query: string): string {
+    const url_ = new URL("https://www.google.com/search");
+    const params = new URLSearchParams(url_.search);
+    params.append("q", query);
+    url_.search = params.toString();
+    const url = url_.toString();
+    return url;
+  }
+
   /**
    *
    * Runs a search on Google for given query string
@@ -34,41 +43,11 @@ class BrowserController {
     numResults?: number;
   }): Promise<void> {
     assert(Boolean(this.instance), "browser instance is not launched yet");
-
     const page = await this.instance.newPage();
-
     this.curPage = page;
+    const url = this.constructUrl(query);
 
-    await page.goto("https://www.google.com");
-
-    const searchElement = await page.evaluateHandle(() => {
-      const xpathResult = document.evaluate(
-        "//textarea[@title='Search']",
-        document,
-        null,
-        XPathResult.FIRST_ORDERED_NODE_TYPE,
-        null
-      );
-      return xpathResult.singleNodeValue;
-    });
-
-    if (!searchElement) {
-      throw new Error("Search textarea not found. ");
-    }
-
-    await searchElement.type(query);
-
-    const inputElement = await page.evaluate(() => {
-      const inputElement = Array.from(document.querySelectorAll("input")).find(
-        (input) => input.value === "Google Search"
-      );
-
-      if (inputElement) {
-        (inputElement as HTMLInputElement).click();
-      } else {
-        console.error("Failed to click search button. ");
-      }
-    });
+    await this.curPage.goto(url);
   }
 
   /**
