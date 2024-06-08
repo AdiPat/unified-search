@@ -5,6 +5,7 @@ import {
   SearchQueryResult,
 } from "./search-engine";
 import { SEARCH_RESULTS_SCROLL_COUNTER } from "./constants";
+import { constructUrl } from "./utils";
 
 class GoogleSearch implements SearchEngine {
   private instance: Browser | null; // browser instance
@@ -46,7 +47,7 @@ class GoogleSearch implements SearchEngine {
 
     const page = await this.instance.newPage();
     this.curPage = page;
-    const url = this.constructUrl(query);
+    const url = constructUrl("https://www.google.com/search", query);
     await this.curPage.goto(url);
 
     this.isSearchPage = true;
@@ -151,27 +152,6 @@ class GoogleSearch implements SearchEngine {
         const span = spans.find((span) => span.textContent === "More results");
         return span ? span.textContent : null;
       });
-    }
-  }
-
-  /**
-   *
-   * Constructs a URL with query parameter for Google Search
-   * @param query Query string to search on Google
-   * @returns Formatted URL
-   *
-   */
-  private constructUrl(query: string): string {
-    try {
-      const url_ = new URL("https://www.google.com/search");
-      const params = new URLSearchParams(url_.search);
-      params.append("q", query);
-      url_.search = params.toString();
-      const url = url_.toString();
-      return url;
-    } catch (error) {
-      console.error("constructUrl(): failed to construct URL", error);
-      return null;
     }
   }
 }

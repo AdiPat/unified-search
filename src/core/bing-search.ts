@@ -4,8 +4,7 @@ import {
   SearchEngineType,
   SearchQueryResult,
 } from "./search-engine";
-import { SEARCH_RESULTS_SCROLL_COUNTER } from "./constants";
-
+import { constructUrl } from "./utils";
 class BingSearch implements SearchEngine {
   private instance: Browser | null; // browser instance
   private curPage: Page | null;
@@ -39,7 +38,7 @@ class BingSearch implements SearchEngine {
     const page = await this.instance.newPage();
     this.curPage = page;
     this.curPageNum = 1;
-    const url = this.constructUrl(query);
+    const url = constructUrl("https://www.bing.com/search", query);
     await this.curPage.goto(url);
 
     this.isSearchPage = true;
@@ -106,27 +105,6 @@ class BingSearch implements SearchEngine {
       searchEngine: SearchEngineType.BING,
       results: resultLinks,
     };
-  }
-
-  /**
-   *
-   * Constructs a URL with query parameter for Google Search
-   * @param query Query string to search on Google
-   * @returns Formatted URL
-   *
-   */
-  private constructUrl(query: string): string {
-    try {
-      const url_ = new URL("https://www.bing.com/search");
-      const params = new URLSearchParams(url_.search);
-      params.append("q", query);
-      url_.search = params.toString();
-      const url = url_.toString();
-      return url;
-    } catch (error) {
-      console.error("constructUrl(): failed to construct URL", error);
-      return null;
-    }
   }
 }
 
