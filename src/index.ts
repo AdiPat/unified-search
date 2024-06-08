@@ -1,1 +1,1 @@
-console.log("Hello, Google Search API!");
+export { GoogleSearch, BingSearch, DuckDuckGoSearch } from "./core";
