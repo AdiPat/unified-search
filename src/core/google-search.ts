@@ -26,6 +26,13 @@ class GoogleSearch implements SearchEngine {
     });
   }
 
+  /**
+   *
+   * Searches for a given query on Google Search
+   * @param query query string to search
+   * @returns true if search page was loaded successfully
+   *
+   */
   async search(query: string): Promise<boolean> {
     if (!query || query.trim() == "") {
       throw new Error("Invalid query");
