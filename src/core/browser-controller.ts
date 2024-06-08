@@ -5,8 +5,11 @@ import { SEARCH_RESULTS_SCROLL_COUNTER } from "./constants";
 class BrowserController {
   private instance: Browser | null; // browser instance
   private curPage: Page | null;
+  private isSearchPage: boolean = false;
 
-  constructor() {}
+  constructor() {
+    this.isSearchPage = false; // default
+  }
 
   /**
    *
@@ -48,6 +51,7 @@ class BrowserController {
       const span = spans.find((span) => span.textContent === "More results");
       return span ? span.textContent : null;
     });
+
     const paginationFound = await this.curPage.$$eval("tbody", (tables) => {
       return tables.length > 0;
     });
@@ -82,11 +86,15 @@ class BrowserController {
     query: string;
     numResults?: number;
   }): Promise<void> {
-    assert(Boolean(this.instance), "browser instance is not launched yet");
+    if (!this.instance) {
+      throw new Error("Browser instance is not launched yet");
+    }
     const page = await this.instance.newPage();
     this.curPage = page;
     const url = this.constructUrl(query);
     await this.curPage.goto(url);
+
+    this.isSearchPage = true;
 
     await new Promise((res) => setTimeout(res, 1000));
     await this.scrollPageToBottom();
@@ -98,13 +106,22 @@ class BrowserController {
    * @returns array result links
    */
   async scrapePageResultLinks() {
+    if (!this.isSearchPage) {
+      throw new Error("Not on search page. Please run search() first");
+    }
     await new Promise((res, rej) => setTimeout(res, 200)); // this is bad, but unavoidable for now
+
     const resultLinks = await this.curPage.evaluate(() => {
       const links = Array.from(document.querySelectorAll("a[data-ved]"));
-      return links.map((link) => ({
-        url: (link as any).href,
-        title: link.textContent,
-      }));
+      return links.map((link) => {
+        let parentNode = link.parentNode;
+
+        return {
+          url: (link as any).href,
+          text: link.textContent,
+          title: parentNode.textContent,
+        };
+      });
     });
 
     return resultLinks;
