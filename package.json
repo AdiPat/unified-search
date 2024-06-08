@@ -1,7 +1,7 @@
 {
-  "name": "google-search-api",
+  "name": "unified-search",
   "version": "1.0.0",
-  "description": "google search api",
+  "description": "A production-grade search aggregator that scrapes web search results programatically using browser automation.",
   "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/AdiPat/google-search-api.git"
+    "url": "git+ssh://git@github.com/AdiPat/unified-search.git"
   },
   "keywords": [
     "tools",
