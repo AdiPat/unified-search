@@ -3,7 +3,6 @@ import {
   SearchEngine,
   SearchEngineType,
   SearchQueryResult,
-  SearchResult,
 } from "./search-engine";
 import { SEARCH_RESULTS_SCROLL_COUNTER } from "./constants";
 
