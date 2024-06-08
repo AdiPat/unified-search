@@ -3,9 +3,9 @@ import {
   SearchEngine,
   SearchEngineType,
   SearchQueryResult,
-} from "./search-engine";
-import { SEARCH_RESULTS_SCROLL_COUNTER } from "./constants";
-import { constructUrl } from "./utils";
+} from "../search-engine";
+import { SEARCH_RESULTS_SCROLL_COUNTER } from "../constants";
+import { constructUrl } from "../utils";
 
 class GoogleSearch implements SearchEngine {
   private instance: Browser | null; // browser instance

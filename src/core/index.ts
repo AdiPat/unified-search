@@ -1,2 +1,2 @@
-export { GoogleSearch } from "./google-search";
-export { BingSearch } from "./bing-search";
+export { GoogleSearch } from "./clients/google-search";
+export { BingSearch } from "./clients/bing-search";
