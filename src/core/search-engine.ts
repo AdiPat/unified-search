@@ -19,8 +19,8 @@ type SearchQueryResult = {
 interface SearchEngine {
   init(): Promise<void>; // initializes the search engine
   search(query: string): Promise<boolean>; // searches for query and returns true if search was successful
-  nextPage(): Promise<SearchResult[]>; // navigates to the next page of search results
+  nextPage(): Promise<void>; // navigates to the next page of search results
   getResults(): Promise<SearchQueryResult>; // returns the current search results
 }
 
-export { SearchQueryResult, SearchResult, SearchEngine };
+export { SearchQueryResult, SearchResult, SearchEngineType, SearchEngine };
