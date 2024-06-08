@@ -10,6 +10,12 @@ export const constructUrl = (baseUrl: string, query: string): string => {
     const url_ = new URL(baseUrl);
     const params = new URLSearchParams(url_.search);
     params.append("q", query);
+
+    if (baseUrl.includes("https://duckduckgo.com/")) {
+      params.append("t", "h_");
+      params.append("ia", "web");
+    }
+
     url_.search = params.toString();
     const url = url_.toString();
     return url;
