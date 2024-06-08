@@ -1,5 +1,4 @@
-import { assert } from "console";
-import puppeteer, { Browser, ElementHandle, Page } from "puppeteer";
+import puppeteer, { Browser, Page } from "puppeteer";
 import { SEARCH_RESULTS_SCROLL_COUNTER } from "./constants";
 
 class BrowserController {
