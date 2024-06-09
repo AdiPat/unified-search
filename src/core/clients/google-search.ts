@@ -133,7 +133,7 @@ class GoogleSearch implements SearchEngine {
     let scrollCounter = 0;
 
     while (
-      !(spanWithText || spanWithText.trim() == "") ||
+      !(spanWithText || (spanWithText && spanWithText.trim() == "")) ||
       scrollCounter++ < SEARCH_RESULTS_SCROLL_COUNTER
     ) {
       paginationFound = await this.curPage.$$eval("tbody", (tables) => {
