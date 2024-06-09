@@ -1,6 +1,6 @@
 {
   "name": "unified-search",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A production-grade search aggregator that scrapes web search results programatically using browser automation.",
   "main": "dist/index.js",
   "scripts": {
