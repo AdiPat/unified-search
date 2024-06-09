@@ -107,6 +107,17 @@ class BingSearch implements SearchEngine {
       results: resultLinks,
     };
   }
+
+  /**
+   *
+   * Closes all open resources and browser instance
+   *
+   */
+  async dispose(): Promise<void> {
+    await this.instance.close().catch((err) => {
+      console.error("Failed to close browser instance. ", err);
+    });
+  }
 }
 
 export { BingSearch };

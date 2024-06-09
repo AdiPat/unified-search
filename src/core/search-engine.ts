@@ -21,6 +21,7 @@ interface SearchEngine {
   search(query: string): Promise<boolean>; // searches for query and returns true if search was successful
   nextPage(): Promise<void>; // navigates to the next page of search results
   getResults(): Promise<SearchQueryResult>; // returns the current search results
+  dispose(): Promise<void>;
 }
 
 export { SearchQueryResult, SearchResult, SearchEngineType, SearchEngine };
