@@ -4,7 +4,6 @@
   "description": "A production-grade search aggregator that scrapes web search results programatically using browser automation.",
   "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node dist/index.js",
     "start:dev": "nodemon src/example.ts",
     "build": "tsc"
@@ -25,6 +24,7 @@
   },
   "homepage": "https://github.com/AdiPat/google-search-api#readme",
   "devDependencies": {
+    "@playwright/test": "^1.44.1",
     "@types/node": "^20.14.2",
     "@types/puppeteer": "^7.0.4",
     "nodemon": "^3.1.3",
