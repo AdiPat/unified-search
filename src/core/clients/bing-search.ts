@@ -5,6 +5,7 @@ import {
   SearchQueryResult,
 } from "../search-engine";
 import { constructUrl } from "../utils";
+
 class BingSearch implements SearchEngine {
   private instance: Browser | null; // browser instance
   private curPage: Page | null;
