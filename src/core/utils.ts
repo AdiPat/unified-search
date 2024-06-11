@@ -9,7 +9,12 @@ export const constructUrl = (baseUrl: string, query: string): string => {
   try {
     const url_ = new URL(baseUrl);
     const params = new URLSearchParams(url_.search);
-    params.append("q", query);
+
+    if (baseUrl.includes("https://search.yahoo.com/")) {
+      params.append("p", query);
+    } else {
+      params.append("q", query);
+    }
 
     if (baseUrl.includes("https://duckduckgo.com/")) {
       params.append("t", "h_");

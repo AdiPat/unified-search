@@ -2,6 +2,7 @@ enum SearchEngineType {
   GOOGLE = "google",
   BING = "bing",
   DUCK_DUCK_GO = "duck-duck-go",
+  YAHOO = "yahoo",
 }
 
 type SearchResult = {
