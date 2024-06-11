@@ -6,7 +6,7 @@ A production-grade search aggregator that scrapes web search results programatic
 
 Unified Search is an attempt to make it easy to retrieve Search Engine results and use those results to do something additional. We all use Search Engines in our day to day life, but sometimes, we want to write programs that can utilize search results (especially links) to do something more complex or advanced (or ridiculously simple too). This library makes it easier to write such programs.
 
-Unified Search automates your browser to simulate a search session on popular search engines like Google, Bing (Microsoft), and Duck Duck Go (more search engines will be added in future). The results from the search session are returned via a simple function call that can be imported (check examples).
+Unified Search automates your browser to simulate a search session on popular search engines like Google, Bing (Microsoft), Yahoo Search, and Duck Duck Go (more search engines will be added in future). The results from the search session are returned via a simple function call that can be imported (check examples).
 
 ## Use-Cases
 
@@ -26,9 +26,14 @@ npm install unified-search
 ### Example
 
 ```javascript
-import { GoogleSearch, BingSearch, DuckDuckGoSearch } from "unified-search";
+import {
+  GoogleSearch,
+  BingSearch,
+  DuckDuckGoSearch,
+  YahooSearch,
+} from "unified-search";
 
-const googleSearch = new GoogleSearch(); // or BingSearch or DuckDuckGoSearch
+const googleSearch = new GoogleSearch(); // or BingSearch or DuckDuckGoSearch or Yahoo Search
 
 googleSearch
   .init()
