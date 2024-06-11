@@ -99,7 +99,7 @@ class DuckDuckGoSearch implements SearchEngine {
 
     return {
       query: this.query,
-      searchEngine: SearchEngineType.GOOGLE,
+      searchEngine: SearchEngineType.DUCK_DUCK_GO,
       results: resultLinks,
     };
   }
