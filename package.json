@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node dist/index.js",
     "start:dev": "nodemon src/example.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "test": "npx playwright test --reporter=null"
   },
   "repository": {
     "type": "git",
